@@ -19,16 +19,19 @@ class bannerHider(ts3plugin):
 	hotkeys = []
 	menuItems = []
 
-	def getBanner(self):
+	def getBanners(self):
+		banners = []
 		try:
 			for widget in QApplication.instance().allWidgets():
 				if widget.className() == 'Banner':
-					return widget
+					banners.append(widget)
+			return banners
 		except: from traceback import format_exc; ts3.logMessage(format_exc(), ts3defines.LogLevel.LogLevel_ERROR, "PyTSon", 0)
 	
-	def hideBanner(self, banner):
-		banner.visible = False
+	def hideBanner(self, banners):
+		for banner in banners:
+			banner.visible = False
 	
 	def onConnectStatusChangeEvent(self, serverConnectionHandlerID, newStatus, errorNumber):
 		if newStatus == 2:
-			self.hideBanner(self.getBanner())
+			self.hideBanner(self.getBanners())
